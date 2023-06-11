@@ -1,6 +1,13 @@
+*{
+  font-family: montserrat;
+}
+
+
+
+
 body {
   background-image: linear-gradient(to left, #ffd000, #ff6a00);
-    font-family: Arial, sans-serif;
+   
   }
   
   #mango {
@@ -8,6 +15,11 @@ body {
     width: 100px;
     height: 100px;
     cursor: pointer;
+    transition: 0.5s ease;
+  }
+
+  #mango:hover {
+    transform: scale(1.2);
   }
   
   #score {
@@ -15,6 +27,7 @@ body {
     top: 10px;
     right: 10px;
     font-size: 24px;
+    font-weight: 800;
   }
   
   #reset, #save {
@@ -23,15 +36,20 @@ body {
     padding: 10px 20px;
     background-color: white;
     color: black;
-    border: 2px solid black;
+    border: none;
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-#reset:hover, #save:hover {
-    background-color: black;
+#reset:hover{
+    background-color: rgb(236, 0, 0);
     color: white;
+}
+
+#save:hover{
+  background-color: #ffd000;
+  color: white;
 }
   
   /* Add some style for the message element */
@@ -48,8 +66,28 @@ body {
     font-weight: 700; /* Add more font weight */
     opacity: 0;
     transition: opacity 0.5s ease;
-    border: 2px solid black;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    border: none;
+
+}
+
+
+label {
+  color: rgb(255, 255, 255);
+  margin-left: 12px;
+  font-weight: 600;
+}
+
+select{
+  padding: 11px;
+  border-radius: 10px;
+  font-weight: 600;
+  border: none;
+  margin-left: 12px;
+}
+
+
+option{
+  font-weight: 600;
 }
 
 @media screen and (max-width: 799px){
