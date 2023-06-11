@@ -83,38 +83,56 @@ function changeMangoShape() {
   // Get the selected value from the mango shape selector
   var selectedValue = mangoShape.value;
 
-  // Update the mango image with the selected value
-  mango.src = selectedValue;
-}
-
-// Define a function to move the mango when the mouse button is clicked
-function moveMangoOnClick(event) {
-  // Check if the left mouse button is clicked
-  if (event.button === 0) {
-    // Check if the mouse button is not currently being pressed
-    if (!mousePressed) {
-      // Set the mousePressed variable to true to indicate that the mouse button is being pressed
-      mousePressed = true;
-
-      // Move the mango to a new position
-      moveMango();
-
-      // Increase the score by one
-      increaseScore();
-
-      // Set a timeout function to set the mousePressed variable to false after 0.3 seconds
-      setTimeout(function() {
-        mousePressed = false;
-      }, 300);
-    }
+// If the selected value is "custom", show the file upload input field
+  if (selectedValue === "custom") {
+    document.getElementById("upload-mango").style.display = "block";
+    mango.src = ""; // Clear the mango image
+  } else {
+    document.getElementById("upload-mango").style.display = "none";
+    mango.src = selectedValue; // Set the mango image to the selected value
   }
 }
 
-// Add event listeners for the mouse click, reset button click, save button click, and mango shape selector change
-mango.addEventListener("mousedown", moveMangoOnClick);
-reset.addEventListener("click", resetScore);
-save.addEventListener("click", saveScore);
+// Define a function to handle the custom mango upload
+function handleMangoUpload(input) {
+  // Check if a file was selected
+  if (input.files && input.files[0]) {
+    // Create a new FileReader object
+    var reader = new FileReader();
+
+    // Define a function to run when the file is loaded
+    reader.onload = function(e) {
+      // Set the mango image source to the loaded file
+      mango.src = e.target.result;
+    }
+
+    // Read the selected file as a data URL
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+// Call the changeMangoShape function when the mango shape selector value changes
 mangoShape.addEventListener("change", changeMangoShape);
 
-// Move the mango to a random position when the page loads
-moveMango();
+// Call the moveMango function when the mango is clicked
+mango.addEventListener("mousedown", function() {
+  mousePressed = true;
+});
+
+// Call the increaseScore function when the mouse button is released over the mango
+mango.addEventListener("mouseup", function() {
+  if (mousePressed) {
+    increaseScore();
+    moveMango();
+  }
+  mousePressed = false;
+});
+
+// Call the resetScore function when the reset button is clicked
+reset.addEventListener("click", resetScore);
+
+// Call the saveScore function when the save button is clicked
+save.addEventListener("click", saveScore);
+
+// Call the changeMangoShape function on page load to set the initial mango shape
+changeMangoShape();
