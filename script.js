@@ -3,10 +3,7 @@ var mango = document.getElementById("mango");
 var score = document.getElementById("score");
 var reset = document.getElementById("reset");
 var save = document.getElementById("save");
-// Get the new element for the message
 var message = document.getElementById("message");
-
-// Get the mango shape selector element
 var mangoShape = document.getElementById("mango-shape");
 
 // Initialize the score variable
@@ -18,6 +15,9 @@ if (savedScore) {
   scoreValue = parseInt(savedScore);
   score.textContent = scoreValue;
 }
+
+// Define a variable to track whether the mouse button is currently being pressed
+var mousePressed = false;
 
 // Define a function to move the mango to a random position
 function moveMango() {
@@ -87,32 +87,34 @@ function changeMangoShape() {
   mango.src = selectedValue;
 }
 
-// Add an event listener to the mango element for click events
-mango.addEventListener("click", function() {
-  // Move the mango to a new position
-  moveMango();
+// Define a function to move the mango when the mouse button is clicked
+function moveMangoOnClick(event) {
+  // Check if the left mouse button is clicked
+  if (event.button === 0) {
+    // Check if the mouse button is not currently being pressed
+    if (!mousePressed) {
+      // Set the mousePressed variable to true to indicate that the mouse button is being pressed
+      mousePressed = true;
 
-  // Increase the score by one
-  increaseScore();
-});
+      // Move the mango to a new position
+      moveMango();
 
-// Add an event listener to the reset button for click events
-reset.addEventListener("click", function() {
-  // Reset the score to zero
-  resetScore();
-});
+      // Increase the score by one
+      increaseScore();
 
-// Add an event listener to the save button for click events
-save.addEventListener("click", function() {
-  // Save the score to local storage
-  saveScore();
-});
+      // Set a timeout function to set the mousePressed variable to false after 0.3 seconds
+      setTimeout(function() {
+        mousePressed = false;
+      }, 300);
+    }
+  }
+}
 
-// Add an event listener to the mango shape selector for change events
-mangoShape.addEventListener("change", function() {
-  // Change the mango shape
-  changeMangoShape();
-});
+// Add event listeners for the mouse click, reset button click, save button click, and mango shape selector change
+mango.addEventListener("mousedown", moveMangoOnClick);
+reset.addEventListener("click", resetScore);
+save.addEventListener("click", saveScore);
+mangoShape.addEventListener("change", changeMangoShape);
 
-// Move the mango to arandom position when the page loads
+// Move the mango to a random position when the page loads
 moveMango();
