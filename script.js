@@ -1,138 +1,93 @@
-// Get the elements from the document
-var mango = document.getElementById("mango");
-var score = document.getElementById("score");
-var reset = document.getElementById("reset");
-var save = document.getElementById("save");
-var message = document.getElementById("message");
-var mangoShape = document.getElementById("mango-shape");
+// Get the necessary elements from the HTML code
+const mango = document.getElementById("mango");
+const score = document.getElementById("score");
+const resetBtn = document.getElementById("reset");
+const saveBtn = document.getElementById("save");
+const mangoShape = document.getElementById("mango-shape");
 
-// Initialize the score variable
-var scoreValue = 0;
+// Define the initial score and mango position
+let currentScore = localStorage.getItem("mangotiScore") || 0;
+let mangoX = 0;
+let mangoY = 0;
+let mangoSrc = localStorage.getItem("mangotiMangoSrc") || "";
 
-// Load the saved score from local storage if it exists
-var savedScore = localStorage.getItem("savedScore");
-if (savedScore) {
-  scoreValue = parseInt(savedScore);
-  score.textContent = scoreValue;
+// Set the mango image source based on the selected mango shape or the saved source
+if (mangoSrc) {
+  mango.src = mangoSrc;
+} else {
+  mango.src = mangoShape.value;
 }
 
-// Define a variable to track whether the mouse button is currently being pressed
-var mousePressed = false;
+// Set the score based on the saved score
+score.textContent = currentScore;
 
-// Define a function to move the mango to a random position
-function moveMango() {
-  // Get the window width and height
-  var windowWidth = window.innerWidth;
-  var windowHeight = window.innerHeight;
-
-  // Get the mango width and height
-  var mangoWidth = mango.width;
-  var mangoHeight = mango.height;
-
-  // Calculate the maximum possible x and y coordinates for the mango
-  var maxX = windowWidth - mangoWidth;
-  var maxY = windowHeight - mangoHeight;
-
-  // Generate random x and y coordinates within the range
-  var x = Math.floor(Math.random() * maxX);
-  var y = Math.floor(Math.random() * maxY);
-
-  // Set the mango position to the new coordinates
-  mango.style.left = x + "px";
-  mango.style.top = y + "px";
+// Set the mango position based on the saved position or randomly place it
+if (localStorage.getItem("mangotiMangoX") && localStorage.getItem("mangotiMangoY")) {
+  mangoX = parseInt(localStorage.getItem("mangotiMangoX"));
+  mangoY = parseInt(localStorage.getItem("mangotiMangoY"));
+  mango.style.left = mangoX + "px";
+  mango.style.top = mangoY + "px";
+} else {
+  placeMango();
 }
 
-// Define a function to increase the score and update the display
-function increaseScore() {
-  // Increment the score value by one
-  scoreValue++;
-
-  // Update the score text content with the new value
-  score.textContent = scoreValue;
-}
-
-// Define a function to reset the score and update the display
-function resetScore() {
-  // Set the score value to zero
-  scoreValue = 0;
-
-  // Update the score text content with the new value
-  score.textContent = scoreValue;
-
-  // Remove the saved score from local storage
-  localStorage.removeItem("savedScore");
-}
-
-// Define a function to save the score to local storage
-function saveScore() {
-  // Save the score value as a string in local storage
-  localStorage.setItem("savedScore", scoreValue.toString());
-
-  // Show a message that says "The score has been saved"
-  message.textContent = "The score has been saved";
-  message.style.opacity = "1"; // Make it visible
-
-  // Set a timeout function to hide the message after five seconds
-  setTimeout(function() {
-    message.style.opacity = "0"; // Make it invisible
-  },5000);
-}
-
-// Define a function to change the mango shape
-function changeMangoShape() {
-  // Get the selected value from the mango shape selector
-  var selectedValue = mangoShape.value;
-
-// If the selected value is "custom", show the file upload input field
-  if (selectedValue === "custom") {
-    document.getElementById("upload-mango").style.display = "block";
-    mango.src = ""; // Clear the mango image
+// Set the mango image source based on the selected mango shape
+mangoShape.addEventListener("change", function() {
+  if (mangoShape.value === "custom") {
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "image/*";
+    fileInput.addEventListener("change", function() {
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+      reader.addEventListener("load", function() {
+        mango.src = reader.result;
+        localStorage.setItem("mangotiMangoSrc", reader.result);
+      });
+      reader.readAsDataURL(file);
+    });
+    fileInput.click();
   } else {
-    document.getElementById("upload-mango").style.display = "none";
-    mango.src = selectedValue; // Set the mango image to the selected value
+    mango.src = mangoShape.value;
+    localStorage.setItem("mangotiMangoSrc", mangoShape.value);
   }
-}
-
-// Define a function to handle the custom mango upload
-function handleMangoUpload(input) {
-  // Check if a file was selected
-  if (input.files && input.files[0]) {
-    // Create a new FileReader object
-    var reader = new FileReader();
-
-    // Define a function to run when the file is loaded
-    reader.onload = function(e) {
-      // Set the mango image source to the loaded file
-      mango.src = e.target.result;
-    }
-
-    // Read the selected file as a data URL
-    reader.readAsDataURL(input.files[0]);
-  }
-}
-
-// Call the changeMangoShape function when the mango shape selector value changes
-mangoShape.addEventListener("change", changeMangoShape);
-
-// Call the moveMango function when the mango is clicked
-mango.addEventListener("mousedown", function() {
-  mousePressed = true;
 });
 
-// Call the increaseScore function when the mouse button is released over the mango
-mango.addEventListener("mouseup", function() {
-  if (mousePressed) {
-    increaseScore();
-    moveMango();
-  }
-  mousePressed = false;
+// Define a function to randomly place the mango on the screen
+function placeMango() {
+  mangoX = Math.floor(Math.random() * (window.innerWidth - mango.width));
+  mangoY = Math.floor(Math.random() * (window.innerHeight - mango.height));
+  mango.style.left = mangoX + "px";
+  mango.style.top = mangoY + "px";
+  localStorage.setItem("mangotiMangoX", mangoX);
+  localStorage.setItem("mangotiMangoY", mangoY);
+}
+
+// Define a function to handle clicking on the mango
+function mangoClicked() {
+  currentScore++;
+  score.textContent = currentScore;
+  placeMango();
+}
+
+// Add an event listener for clicking on the mango
+mango.addEventListener("click", mangoClicked);
+
+// Add an event listener for clicking the reset button
+resetBtn.addEventListener("click", function() {
+  currentScore = 0;
+  score.textContent = currentScore;
+  localStorage.setItem("mangotiScore", currentScore);
 });
 
-// Call the resetScore function when the reset button is clicked
-reset.addEventListener("click", resetScore);
+// Add an event listener for clicking the save button
+saveBtn.addEventListener("click", function() {
+  localStorage.setItem("mangotiScore", currentScore);
+  localStorage.setItem("mangotiMangoSrc", mango.src);
+  localStorage.setItem("mangotiMangoX", mangoX);
+  localStorage.setItem("mangotiMangoY", mangoY);
+  alert("Score and mango data saved!");
+});
 
-// Call the saveScore function when the save button is clicked
-save.addEventListener("click", saveScore);
-
-// Call the changeMangoShape function on page load to set the initial mango shape
-changeMangoShape();
+// Call the placeMango function to place the initial mango
+placeMango();
