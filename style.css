@@ -6,7 +6,7 @@
 
 
 body {
-  background-image: linear-gradient(to left, #ffd000, #ff6a00);
+  background-image: linear-gradient(to left, #2ec70f, #af5616);
    
   }
   
@@ -16,7 +16,7 @@ body {
     height: 100px;
     cursor: pointer;
     transition: 0.5s ease;
-    filter: drop-shadow(10px 10px 5px hsla(0, 0%, 0%, 0.5));
+
   }
 
   #mango:hover {
@@ -29,6 +29,7 @@ body {
     right: 10px;
     font-size: 24px;
     font-weight: 800;
+    color: #fff;
   }
   
   #reset, #save {
@@ -92,21 +93,20 @@ option{
 }
 
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 700px) {
   label {
     font-size: 14px;
     display: block;
     margin-bottom: 4px;
     margin-left: 3px;
-    margin-top: 10px;
+    margin-top: 800px;
   }
 
 
   select{
     margin-left: 2px;
     margin-top: 1px;
-    height: 12px;
-    width: 12px;
+
   }
 
 }
