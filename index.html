@@ -7,25 +7,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <title>Mangoti</title>
+  <meta name="description" content="Osu + Popcat = Mangoti">
 
 </head>
 <body>
-  <img id="mango" src="Images/mango.png" alt="Mango">
+ 
   <div id="score">0</div>
+  
+  <!-- Add the "Add custom Mango/Photo" label and input field -->
+  <label for="upload-mango" id="custom">Add Custom Mango/Photo</label>
+  <input type="file" id="upload-mango" accept=".png,.jpg,.jpeg" onchange="handleMangoUpload(this)">
   <button id="reset">Reset</button>
   <button id="save">Save</button>
   <!-- Add a new element for the message -->
+  <img id="mango" src="Images/mango.png" alt="Mango">
   <div id="message"></div>
   <label for="mango-shape">Select mango shape</label>
   <select id="mango-shape">
     <option value="Images/mango.png">Default - Apple Mango</option>
     <option value="Images/mango2.png">Google Mango</option>
     <option value="Images/mango3.png">Windows 11 22H2 Mango</option>
-   <!-- <option value="Images/mango2.png">Google Mango</option> -->
   </select>
+
+  
+
   <!-- Link to the external JavaScript file -->
   <script src="script.js"></script>
 </body>
 </html>
-
-
