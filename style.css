@@ -1,0 +1,57 @@
+body {
+  background-image: linear-gradient(to left, #ffd000, #ff6a00);
+    font-family: Arial, sans-serif;
+  }
+  
+  #mango {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+  }
+  
+  #score {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+  }
+  
+  #reset, #save {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    background-color: white;
+    color: black;
+    border: 2px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#reset:hover, #save:hover {
+    background-color: black;
+    color: white;
+}
+  
+  /* Add some style for the message element */
+  #message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+    border-radius: 10px;
+    background-color: white;
+    color: black;
+    font-size: 16px;
+    font-weight: 700; /* Add more font weight */
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    border: 2px solid black;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+@media screen and (max-width: 799px){
+
+}
